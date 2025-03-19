@@ -23,3 +23,16 @@
   type          = map(any)
   description   = "A map of tags"  
  }
+
+ variable "virtual_networks" {
+   type = map(object({
+     name               = string
+     resource_group_key = string
+     address_space      = list(string)
+     subnets = map(object({
+       name           = optional(string)
+       address_prefix = string
+     }))
+   }))
+   description = "The virtual networks to deploy"
+ }
