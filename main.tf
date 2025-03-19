@@ -17,4 +17,7 @@
  resource "azurerm_resource_group" "contoso_rg" {
    name     = "contoso_rg"
    location = "eastus"
+   tags     = {
+   cost_center = "contoso research"
+ }
  }
