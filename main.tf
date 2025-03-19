@@ -13,22 +13,31 @@
    features {}
  }
 
- locals {
-    prefix = "contoso"
-    region = "eastus"
-    tags   = {
-      cost_center = "contoso research"  
-    }
+ variable "prefix" {}
+
+ variable "region" {
+  type          = string
+  default       = "westus"
+  description   = "The Azure region to deploy resources"
+  validation {
+    condition = contains(["UK South", "UK West", "eastus", "West Europe", "westus"], var.region)
+    error_message = "Invalid Region"
+  }  
  }
-    
-  resource "azurerm_resource_group" "contoso_rg" {
-   name         = "${local.prefix}_rg"
-   location     = local.region
-   tags         = local.tags
+
+ variable "tags" {
+  type          = map(any)
+  description   = "A map of tags"  
+ }
+
+ resource "azurerm_resource_group" "contoso_rg" {
+   name         = "${var.prefix}_rg"
+   location     = var.region
+   tags         = var.tags
  }
 
  resource "azurerm_resource_group" "contoso_dev_rg" {
-    name        = "${local.prefix}_dev_rg"
-    location    = local.region
-    tags        = local.tags
+    name        = "${var.prefix}_dev_rg"
+    location    = var.region
+    tags        = var.tags
  }
